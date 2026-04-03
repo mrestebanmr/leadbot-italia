@@ -62,7 +62,7 @@ if st.session_state.df is not None:
 
     # --- Tabla de resultados ---
     st.subheader(" 📋 Risultati")
-    st.dataframe(df, use_container_width=True)
+    st.dataframe(df, width="stretch")
 
     # --- Exportación ---
     st.subheader("📥 Esporta i risultati")
