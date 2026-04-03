@@ -48,7 +48,7 @@ def search_businesses(query, language="it", max_paginas=3):
             break
 
         next_token = data["next_page_token"]
-        time.sleep(5) # Google requiere una pausa antes de usar el token.
+        time.sleep(2) # Google requiere una pausa antes de usar el token.
 
         params = {
             "pagetoken": next_token,

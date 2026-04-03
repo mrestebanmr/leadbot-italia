@@ -21,8 +21,13 @@ st.markdown("Trova aziende B2B in Italia in un modo autentico")
 
 # --- Pánel de búsqueda ---
 st.sidebar.header(" 🔍 Ricerca")
-query = st.sidebar.text_input("Settore + Cittá", placeholder="agenzie marketing Milano")
+query = st.sidebar.text_input("Settore + Città", placeholder="Agenzie Marketing Milano")
 buscar = st.sidebar.button("Cercare Leads")
+
+# --- Filtros ---
+st.sidebar.header("🎯 Filtri")
+min_rating = st.sidebar.slider("Rating minimo", 0.0, 5.0, 0.0, 0.5)
+min_recensioni = st.sidebar.number_input("Recensioni minime:", min_value=0, value=0, step=10)
 
 # --- Lógica Principal ---
 # Inicializar session_state si no existe
@@ -52,6 +57,15 @@ if buscar and query:
 # Mostrar resultados si existen en memoria
 if st.session_state.df is not None:
     df = st.session_state.df
+
+    # Aplicar filtros al DataFrame
+    df = df[df["Rating"] >= min_rating]
+    df = df[df["Recensioni_totali"] >= min_recensioni]
+
+    # Aviso si los filtros eliminaron todos los resultados
+    if df.empty:
+        st.warning("⚠️ Nessuna azienda corrisponde ai filtri selezionati.")
+        st.stop()
 
 
     # --- Métricas ---
