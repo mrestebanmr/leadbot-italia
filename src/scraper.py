@@ -21,10 +21,10 @@ def search_businesses(query, language="it"):
 
     for empresa in data["results"]:
         empresas.append({
-            "nombre": empresa.get("name", "N/A"),
-            "direccion": empresa.get("formatted_address", "N/A"),
-            "rating": empresa.get("rating", "N/A"),
-            "total_reseñas": empresa.get("user_ratings_total", "N/A")
+            "Nome": empresa.get("name", "N/A"),
+            "Indirizzo": empresa.get("formatted_address", "N/A"),
+            "Rating": empresa.get("rating", "N/A"),
+            "Recensioni_totali": empresa.get("user_ratings_total", "N/A")
         })
 
     return empresas

@@ -1,6 +1,7 @@
 import streamlit as st
 from src.scraper import search_businesses
 from src.cleaner import limpiar_datos
+from src.exporter import exportar_csv
 
 # --- Configuración de la página ---
 st.set_page_config(
@@ -19,18 +20,33 @@ query = st.sidebar.text_input("Settore + Cittá", placeholder="agenzie marketing
 buscar = st.sidebar.button("Cercare Leads")
 
 # --- Lógica Principal ---
+# Inicializar session_state si no existe
+if "df" not in st.session_state:
+    st.session_state.df = None
+
 if buscar and query:
-    with st.spinner("Cercando aziende..."):
+    with st.spinner("Ricerca in corso..."):
         resultado = search_businesses(query)
-        df = limpiar_datos(resultado)
+        st.session_state.df = limpiar_datos(resultado)
 
-        # --- Métricas ---
-        col1, col2, col3 = st.columns(3)
-        col1.metric("Totale Leads", len(df))
-        col2.metric("Rating promedio", round(df["rating"].mean(), 2))
-        col3.metric("Con recensioni", len(df[df["total_reseñas"] > 0]))
+# Mostrar resultados si existen en memoria
+if st.session_state.df is not None:
+    df = st.session_state.df
 
-        # --- Tabla de resultados ---
-        st.subheader(" 📋 Risultati")
-        st.dataframe(df, use_container_width=True)
 
+    # --- Métricas ---
+    col1, col2, col3 = st.columns(3)
+    col1.metric("Totale Leads", len(df))
+    col2.metric("Rating promedio", round(df["Rating"].mean(), 2))
+    col3.metric("Con recensioni", len(df[df["Recensioni_totali"] > 0]))
+
+    # --- Tabla de resultados ---
+    st.subheader(" 📋 Risultati")
+    st.dataframe(df, use_container_width=True)
+
+    # --- Exportación ---
+    st.subheader("📥 Esporta i risultati")
+
+    if st.button("💾 Scarica CSV"):
+        nombre = exportar_csv(df)
+        st.success(f"File salvato: data/processed/{nombre}")
