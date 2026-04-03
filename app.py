@@ -15,9 +15,75 @@ st.set_page_config(
     layout = "wide"
 )
 
+# --- Estilos CSS personalizados ---
+st.markdown("""
+    <style>
+    /* Fuente general */
+    html, body, [class*="css"] {
+        font-family: 'Courier New', monospace;
+    }
+
+    /* Título principal */
+    h1 {
+        color: #00D4AA;
+        font-size: 2.5rem;
+        font-weight: 800;
+        letter-spacing: 2px;
+    }
+
+    /* Subtítulos */
+    h2, h3 {
+        color: #00D4AA;
+        letter-spacing: 1px;
+    }
+
+    /* Tarjetas de métricas */
+    [data-testid="metric-container"] {
+        background-color: #1A1F2E;
+        border: 1px solid #00D4AA;
+        border-radius: 10px;
+        padding: 15px;
+    }
+
+    /* Botones */
+    .stButton > button {
+        background-color: #00D4AA;
+        color: #0E1117;
+        font-weight: 700;
+        border-radius: 8px;
+        border: none;
+        padding: 10px 20px;
+        letter-spacing: 1px;
+        transition: 0.3s;
+    }
+
+    /* Efecto hover en botones */
+    .stButton > button:hover {
+        background-color: #00F5C4;
+        transform: translateY(-2px);
+    }
+
+    /* Sidebar */
+    [data-testid="stSidebar"] {
+        background-color: #1A1F2E;
+        border-right: 1px solid #00D4AA33;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
 # --- Título y descripión ---
-st.title(" 🤖 LeadBot Italia")
-st.markdown("Trova aziende B2B in Italia in un modo autentico")
+st.markdown("""
+    <div style='text-align: center; padding: 20px 0;'>
+        <h1>🤖 LeadBot Italia</h1>
+        <p style='color: #00D4AA; font-size: 1.1rem; letter-spacing: 2px;'>
+            TROVA · ANALIZZA · ESPORTA
+        </p>
+        <p style='color: #888; font-size: 0.9rem;'>
+            Lead B2B italiani in pochi secondi
+        </p>
+    </div>
+    <hr style='border-color: #00D4AA33; margin-bottom: 30px;'>
+""", unsafe_allow_html=True)
 
 # --- Pánel de búsqueda ---
 st.sidebar.header(" 🔍 Ricerca")
