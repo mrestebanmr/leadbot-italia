@@ -1,7 +1,12 @@
+import os
+from dotenv import load_dotenv
 import streamlit as st
 from src.scraper import search_businesses
 from src.cleaner import limpiar_datos
-from src.exporter import exportar_csv
+from src.exporter import exportar_csv, exportar_google_sheets
+
+load_dotenv()
+SHEET_ID = os.getenv("GOOGLE_SHEET_ID")
 
 # --- Configuración de la página ---
 st.set_page_config(
@@ -50,3 +55,9 @@ if st.session_state.df is not None:
     if st.button("💾 Scarica CSV"):
         nombre = exportar_csv(df)
         st.success(f"File salvato: data/processed/{nombre}")
+
+    if st.button("📊 Esporta su Google Sheets"):
+        with st.spinner("Caricando su Google Sheets..."):
+            enlace = exportar_google_sheets(df, SHEET_ID)
+        st.success("Foglio creato con succeso!")
+        st.markdown(f"[Apri il foglio Google Sheets]({enlace})")
