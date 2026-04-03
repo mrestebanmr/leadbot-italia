@@ -6,9 +6,9 @@ def limpiar_datos(empresas):
     # Eliminar duplicados
     df = df.drop_duplicates(subset=["Nome"])
 
-    # Rellenar valores vacíos
-    df["Rating"] = df["Rating"].fillna(0)
-    df["Recensioni_totali"] = df["Recensioni_totali"].fillna(0)
+    # Convierte a númerico - cualquier valor no convertible se vuelve NaN
+    df["Rating"] = pd.to_numeric(df["Rating"], errors="coerce").fillna(0)
+    df["Recensioni_totali"] = pd.to_numeric(df["Recensioni_totali"], errors="coerce").fillna(0)
 
     # Convertir tipos
     df["Rating"] = df["Rating"].astype(float)

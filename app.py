@@ -29,10 +29,25 @@ buscar = st.sidebar.button("Cercare Leads")
 if "df" not in st.session_state:
     st.session_state.df = None
 
+if buscar and not query:     #Aviso si el usuario no escribió nada
+    st.sidebar.warning("⚠️ Inserisci un settore e una città")
+
 if buscar and query:
-    with st.spinner("Ricerca in corso..."):
-        resultado = search_businesses(query)
-        st.session_state.df = limpiar_datos(resultado)
+    try:
+        with st.spinner("Ricerca in corso..."):
+            resultado = search_businesses(query)
+        
+            if not resultado:
+                st.info("🔍 Nessuna azienda trovata. Prova con un'altra ricerca.")
+            else:
+                st.session_state.df = limpiar_datos(resultado)
+
+    except ValueError as e:
+        st.error(f"⚠️ Errore: {e}")
+    except ConnectionError:
+        st.error("🔌 Problema di conessione. Controlla la tua rete e riprova")
+    except Exception as e:
+        st.error(f"❌ Erorre inaspettato: {e}")
 
 # Mostrar resultados si existen en memoria
 if st.session_state.df is not None:
