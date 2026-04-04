@@ -165,6 +165,6 @@ if st.session_state.df is not None:
 
     if st.button("📊 Esporta su Google Sheets"):
         with st.spinner("Caricando su Google Sheets..."):
-            enlace = exportar_google_sheets(df, SHEET_ID)
+            enlace = exportar_google_sheets(df, SHEET_ID, query)
         st.success("Foglio creato con succeso!")
         st.markdown(f"[Apri il foglio Google Sheets]({enlace})")

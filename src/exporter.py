@@ -13,7 +13,7 @@ def exportar_csv(df):
 
     return nombre_archivo
 
-def exportar_google_sheets(df, sheet_id):
+def exportar_google_sheets(df, sheet_id, query):
     # Permisos necesarios para leer y escribir Sheets y Drive
     scopes = [
         "https://www.googleapis.com/auth/spreadsheets",
@@ -33,12 +33,25 @@ def exportar_google_sheets(df, sheet_id):
     hoja = cliente.open_by_key(sheet_id)
     worksheet = hoja.get_worksheet(0)
 
-    # Limpia el contenido anterior
-    worksheet.clear()
-    
-    datos = [df.columns.tolist()] + df.values.tolist()
-    worksheet.update(datos)
+    # Añade columnas de metadata a los datos
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M")
+    df = df.copy()
+    df.insert(0, "Data ricerca", timestamp)
+    df.insert(1, "Query", query)
 
+    # Verifica si la hoja ya tiene encabezados
+    contenuto_attuale = worksheet.get_all_values()
+
+    if not contenuto_attuale:
+        worksheet.append_row(df.columns.tolist())
+
+    datos = df.astype(str).values.tolist() # Convierte todo a String para evitar conflictos con Sheets
+    # Escribe fila por fila para evitar problemas de estructura.
+    for fila in datos:
+        # Aplana cualquier valor anidado a string simple
+        fila_limpia = [str(v) if not isinstance(v, (str, int, float)) else v for v in fila]
+        worksheet.append_row(fila_limpia)
+    
     # Devuelve el enlace público
     return f"https://docs.google.com/spreadsheets/d/{sheet_id}"
 
