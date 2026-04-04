@@ -1,3 +1,4 @@
 .env
 venv/
 config/google_credentials.json
+config/oauth_credentials.json
