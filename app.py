@@ -71,7 +71,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# --- Título y descripión ---
+# --- Título y descripión CSS ---
 st.markdown("""
     <div style='text-align: center; padding: 20px 0;'>
         <h1>🤖 LeadBot Italia</h1>
@@ -91,6 +91,13 @@ query = st.sidebar.text_input("Settore + Città", placeholder="Agenzie Marketing
 buscar = st.sidebar.button("Cercare Leads")
 
 # --- Filtros ---
+st.sidebar.header("📊 Quantità")
+max_leads = st.sidebar.select_slider(
+    "Leads per ricerca",
+    options=[20,40,60],
+    value = 20
+)
+
 st.sidebar.header("🎯 Filtri")
 min_rating = st.sidebar.slider("Rating minimo", 0.0, 5.0, 0.0, 0.5)
 min_recensioni = st.sidebar.number_input("Recensioni minime:", min_value=0, value=0, step=10)
@@ -106,7 +113,7 @@ if buscar and not query:     #Aviso si el usuario no escribió nada
 if buscar and query:
     try:
         with st.spinner("Ricerca in corso..."):
-            resultado = search_businesses(query)
+            resultado = search_businesses(query, max_leads = max_leads)
         
             if not resultado:
                 st.info("🔍 Nessuna azienda trovata. Prova con un'altra ricerca.")
@@ -147,9 +154,14 @@ if st.session_state.df is not None:
     # --- Exportación ---
     st.subheader("📥 Esporta i risultati")
 
-    if st.button("💾 Scarica CSV"):
-        nombre = exportar_csv(df)
-        st.success(f"File salvato: data/processed/{nombre}")
+    csv = df.to_csv(index=False).encode("utf-8") # Convertir DF a CSV en memoria
+
+    st.download_button(
+    label = "💾 Scarica CSV",
+    data = csv,
+    file_name = f"leads_{query.replace(' ', '_')}.csv",
+    mime = "text/csv"
+    )
 
     if st.button("📊 Esporta su Google Sheets"):
         with st.spinner("Caricando su Google Sheets..."):

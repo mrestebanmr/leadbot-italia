@@ -2,6 +2,7 @@ import pandas as pd
 
 def limpiar_datos(empresas):
     df = pd.DataFrame(empresas)
+    df = df.fillna("N/A")
 
     # Eliminar duplicados
     df = df.drop_duplicates(subset=["Nome"])

@@ -35,13 +35,9 @@ def exportar_google_sheets(df, sheet_id):
 
     # Limpia el contenido anterior
     worksheet.clear()
-
-    # Escribe los encabezados
-    worksheet.append_row(df.columns.tolist())
     
-    # Escribe los datos fila por fila
-    for _, fila in df.iterrows():
-        worksheet.append_row(fila.tolist())
+    datos = [df.columns.tolist()] + df.values.tolist()
+    worksheet.update(datos)
 
     # Devuelve el enlace público
     return f"https://docs.google.com/spreadsheets/d/{sheet_id}"
