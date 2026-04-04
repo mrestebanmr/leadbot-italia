@@ -11,7 +11,7 @@ SHEET_ID = os.getenv("GOOGLE_SHEET_ID")
 # --- Configuración de la página ---
 st.set_page_config(
     page_title = "LeadBot Italia",
-    page_icon = "🤖",
+    page_icon = "🗺️",
     layout = "wide"
 )
 
@@ -74,12 +74,12 @@ st.markdown("""
 # --- Título y descripión CSS ---
 st.markdown("""
     <div style='text-align: center; padding: 20px 0;'>
-        <h1>🤖 LeadBot Italia</h1>
+        <h1>🔍 LeadBot Italia</h1>
         <p style='color: #00D4AA; font-size: 1.1rem; letter-spacing: 2px;'>
             TROVA · ANALIZZA · ESPORTA
         </p>
         <p style='color: #888; font-size: 0.9rem;'>
-            Lead B2B italiani in pochi secondi
+            Lead B2B Italiani in pochi secondi
         </p>
     </div>
     <hr style='border-color: #00D4AA33; margin-bottom: 30px;'>
