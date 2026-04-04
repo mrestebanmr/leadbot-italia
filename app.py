@@ -87,8 +87,22 @@ st.markdown("""
 
 # --- Pánel de búsqueda ---
 st.sidebar.header(" 🔍 Ricerca")
-query = st.sidebar.text_input("Settore + Città", placeholder="Agenzie Marketing Milano")
+if "ultimo_query" not in st.session_state:
+    st.session_state.ultimo_query = ""
+
+query = st.sidebar.text_input(
+    "Settore + Città",
+    placeholder = "Agenzie Marketing Roma",
+    key = "query_input"
+)
+
 buscar = st.sidebar.button("Cercare Leads")
+# Activamos búsqueda con Enter
+if query and query != st.session_state.ultimo_query:
+    buscar = True
+
+if buscar and query:
+    st.session_state.ultimo_query = query
 
 # --- Filtros ---
 st.sidebar.header("📊 Quantità")
