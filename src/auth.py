@@ -10,11 +10,9 @@ SCOPES = "https://www.googleapis.com/auth/spreadsheets https://www.googleapis.co
 TOKEN_FILE = "config/user_token.json"
 def _get_redirect_uri():
     try:
-        return st.secrets["OAUTH_REDIRECT_URI"]
+        return str(st.secrets["OAUTH_REDIRECT_URI"])
     except Exception:
         return os.getenv("OAUTH_REDIRECT_URI", "http://localhost:8501")
-
-REDIRECT_URI = _get_redirect_uri()
 
 
 def cargar_credenciales_oauth():
@@ -43,7 +41,7 @@ def construir_url_oauth(state=None):
     client_id, _ = cargar_credenciales_oauth()
     params = {
         "client_id": client_id,
-        "redirect_uri": REDIRECT_URI,
+        "redirect_uri": _get_redirect_uri(),
         "response_type": "code",
         "scope": SCOPES,
         "access_type": "offline",
@@ -62,7 +60,7 @@ def intercambiar_codigo_por_token(codigo):
             "code": codigo,
             "client_id": client_id,
             "client_secret": client_secret,
-            "redirect_uri": REDIRECT_URI,
+            "redirect_uri": _get_redirect_uri(),
             "grant_type": "authorization_code",
         }
     )
