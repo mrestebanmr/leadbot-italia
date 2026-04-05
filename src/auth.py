@@ -10,7 +10,7 @@ SCOPES = "https://www.googleapis.com/auth/spreadsheets https://www.googleapis.co
 TOKEN_FILE = "config/user_token.json"
 def _get_redirect_uri():
     try:
-        return str(st.secrets["OAUTH_REDIRECT_URI"])
+        return str(st.secrets["oauth_credentials"]["redirect_uri"])
     except Exception:
         return os.getenv("OAUTH_REDIRECT_URI", "http://localhost:8501")
 
