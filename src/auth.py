@@ -8,7 +8,13 @@ AUTHORIZE_URL = "https://accounts.google.com/o/oauth2/auth"
 TOKEN_URL = "https://oauth2.googleapis.com/token"
 SCOPES = "https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/drive.file"
 TOKEN_FILE = "config/user_token.json"
-REDIRECT_URI = os.getenv("OAUTH_REDIRECT_URI", "http://localhost:8501")
+def _get_redirect_uri():
+    try:
+        return st.secrets["OAUTH_REDIRECT_URI"]
+    except Exception:
+        return os.getenv("OAUTH_REDIRECT_URI", "http://localhost:8501")
+
+REDIRECT_URI = _get_redirect_uri()
 
 
 def cargar_credenciales_oauth():
