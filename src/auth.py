@@ -12,15 +12,25 @@ REDIRECT_URI = os.getenv("OAUTH_REDIRECT_URI", "http://localhost:8501")
 
 
 def cargar_credenciales_oauth():
+    # Intentar leer de st.secrets (producción en Streamlit Cloud)
     try:
-        client_id = st.secrets["oauth_credentials"]["cliente_id"]
-        client_secret = st.secrets["oauth_credentials"]["client_secret"]
-        return client_id, client_secret
-    except Exception:
-        with open ("config/oauth_credentials.json") as f:
+        return (
+            st.secrets["oauth_credentials"]["client_id"],
+            st.secrets["oauth_credentials"]["client_secret"]
+        )
+    except Exception as e:
+        secrets_error = e
+    # Fallback: leer del archivo local (desarrollo)
+    try:
+        with open("config/oauth_credentials.json") as f:
             data = json.load(f)
-        web = data["web"]
-        return web["client_id"], web["client_secret"]
+        return data["web"]["client_id"], data["web"]["client_secret"]
+    except FileNotFoundError:
+        raise RuntimeError(
+            f"No se encontraron credenciales OAuth. "
+            f"st.secrets falló con: {secrets_error}. "
+            f"Archivo local config/oauth_credentials.json tampoco existe."
+        )
 
 
 def construir_url_oauth(state=None):
