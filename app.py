@@ -1,5 +1,6 @@
 import os
 import uuid
+import streamlit as st
 import pickle
 from dotenv import load_dotenv
 import streamlit as st
@@ -17,6 +18,11 @@ from src.auth import (
 )
 
 load_dotenv()
+# Leer secrets de Streamlit Cloud si están disponibles
+if hasattr(st, "secrets"):
+    os.environ.setdefault("GOOGLE_MAPS_API_KEY", st.secrets.get("GOOGLE_MAPS_API_KEY", ""))
+    os.environ.setdefault("OUTSCRAPER_API_KEY", st.secrets.get("OUTSCRAPER_API_KEY", ""))
+    os.environ.setdefault("GOOGLE_SHEET_ID", st.secrets.get("GOOGLE_SHEET_ID", ""))
 
 # --- Cargar token guardado al inicio ---
 if "google_token" not in st.session_state:

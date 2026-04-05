@@ -3,3 +3,4 @@ venv/
 config/google_credentials.json
 config/oauth_credentials.json
 config/user_token.json
+.streamlit/secrets.toml
