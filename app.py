@@ -298,5 +298,4 @@ if st.session_state.df is not None:
                 with open(f"/tmp/oauth_state_{state_id}.pkl", "wb") as f:
                     pickle.dump({"df": df, "query": query}, f)
                 oauth_url = construir_url_oauth(state=state_id)
-                st.write(f"redirect_uri usado: `{oauth_url.split('redirect_uri=')[1].split('&')[0]}`")
                 st.markdown(f"[🔗 Accedi con Google]({oauth_url})")
