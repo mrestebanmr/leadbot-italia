@@ -41,7 +41,7 @@ if "code" in params and not credenciales_validas():
 
             # Restaurar df y query guardados antes del redirect
             state_id = params.get("state", "")
-            state_file = f"config/oauth_state_{state_id}.pkl"
+            state_file = f"/tmp/oauth_state_{state_id}.pkl"
             if state_id and os.path.exists(state_file):
                 with open(state_file, "rb") as f:
                     saved = pickle.load(f)
@@ -295,10 +295,7 @@ if st.session_state.df is not None:
             st.info("Per esportare, collega prima il tuo account Google.")
             if st.button("🔗 Collega il tuo account Google"):
                 state_id = str(uuid.uuid4())
-                with open(f"config/oauth_state_{state_id}.pkl", "wb") as f:
+                with open(f"/tmp/oauth_state_{state_id}.pkl", "wb") as f:
                     pickle.dump({"df": df, "query": query}, f)
                 oauth_url = construir_url_oauth(state=state_id)
-                st.markdown(
-                    f'<a href="{oauth_url}" target="_self" style="display:inline-block;padding:10px 20px;background:#00D4AA;color:#0E1117;font-weight:700;border-radius:8px;text-decoration:none;">🔗 Accedi con Google</a>',
-                    unsafe_allow_html=True
-                )
+                st.link_button("🔗 Accedi con Google", oauth_url)
