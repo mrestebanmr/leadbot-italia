@@ -38,7 +38,7 @@ def search_businesses(query, language="it", max_leads=20):
 
 def enrich_emails(empresas):
     # Filtra solo las empresas que tienen sitio web
-    con_web = [e for e in empresas if e["Sito Web"] != ["N/A"]]
+    con_web = [e for e in empresas if e["Sito Web"] != "N/A"]
 
     if not con_web:
         return empresas

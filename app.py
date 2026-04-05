@@ -3,6 +3,8 @@ import uuid
 import pickle
 from dotenv import load_dotenv
 import streamlit as st
+import plotly.express as px
+import plotly.graph_objects as go
 from src.scraper import search_businesses
 from src.cleaner import limpiar_datos
 from src.exporter import exportar_google_sheets
@@ -198,6 +200,62 @@ if st.session_state.df is not None:
     st.subheader("📋 Risultati")
     st.dataframe(df, width="stretch")
 
+    # --- Gráficos --- ·1 Top 10 reseñas
+    st.subheader("📊 Analisi visiva")
+    top_recensioni = df.nlargest(10, "Recensioni_totali")
+    fig1 = px.bar(
+        top_recensioni,
+        x = "Recensioni_totali",
+        y = "Nome",
+        orientation = "h",
+        title = "🏆 Top 10 aziende per recensioni",
+        color = "Recensioni_totali",
+        color_continuous_scale = "teal",
+        labels = {"Recensioni_totali": "Recensioni", "Nome": "Azienda"}
+    )
+    fig1.update_layout(
+        template = "plotly_dark",
+        showlegend = False,
+        yaxis = {"categoryorder": "total ascending"}
+    )
+    st.plotly_chart(fig1, use_container_width=True)
+
+    # Gráfico 2: Top 10 por Rating
+    top_rating = df.nlargest(10, "Rating")
+    fig2 = px.bar(
+        top_rating,
+        x = "Rating",
+        y = "Nome",
+        orientation = "h",
+        title = "⭐ Top 10 aziende per rating",
+        color = "Rating",
+        color_continuous_scale = "teal",
+        labels = {"Rating": "Rating", "Nome": "Azienda"}
+    )
+    fig2.update_layout(
+        template = "plotly_dark",
+        showlegend = False,
+        yaxis = {"categoryorder": "total ascending"},
+        xaxis = {"range": [0,5]}
+    )
+    st.plotly_chart(fig2, use_container_width=True)
+
+    # --- Gráfico 3: % empresas con web ---
+    con_web = len(df[df["Sito Web"] != "N/A"])
+    sin_web = len(df[df["Sito Web"] == "N/A"])
+    fig3 = go.Figure(data=[go.Pie(
+        labels=["Con sito web", "Senza sito web"],
+        values = [con_web, sin_web],
+        hole = 0.4,
+        marker_colors = ["#00D4AA", "#1A1F2E"]
+    )])
+    fig3.update_layout(
+        template = "plotly_dark",
+        title = "🌐 Presenza Online"
+    )
+    st.plotly_chart(fig3, use_container_width=True)
+
+
     # --- Exportación ---
     st.subheader("📥 Esporta i risultati")
 
@@ -225,12 +283,17 @@ if st.session_state.df is not None:
             st.markdown(f"[Apri il foglio]({enlace})")
     else:
         if st.button("📊 Esporta su Google Sheets"):
-            state_id = str(uuid.uuid4())
-            with open(f"config/oauth_state_{state_id}.pkl", "wb") as f:
-                pickle.dump({"df": df, "query": query}, f)
-            oauth_url = construir_url_oauth(state=state_id)
-            st.markdown(
-                f'<meta http-equiv="refresh" content="0;url={oauth_url}">',
-                unsafe_allow_html=True
-            )
-            st.info("Reindirizzamento a Google...")
+            st.session_state.mostrar_boton_oauth = True
+
+        if st.session_state.get("mostrar_boton_oauth"):
+            st.info("Per esportare, collega prima il tuo account Google.")
+            if st.button("🔗 Collega il tuo account Google"):
+                state_id = str(uuid.uuid4())
+                with open(f"config/oauth_state_{state_id}.pkl", "wb") as f:
+                    pickle.dump({"df": df, "query": query}, f)
+                oauth_url = construir_url_oauth(state=state_id)
+                st.markdown(
+                    f'<meta http-equiv="refresh" content="0;url={oauth_url}">',
+                    unsafe_allow_html=True
+                )
+                st.info("Reindirizzamento a Google...")
