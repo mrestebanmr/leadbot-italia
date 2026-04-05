@@ -298,6 +298,7 @@ if st.session_state.df is not None:
                 with open(f"config/oauth_state_{state_id}.pkl", "wb") as f:
                     pickle.dump({"df": df, "query": query}, f)
                 oauth_url = construir_url_oauth(state=state_id)
+                st.code(oauth_url, language=None)  # DEBUG: mostrar URL temporal
                 st.markdown(
                     f'<meta http-equiv="refresh" content="0;url={oauth_url}">',
                     unsafe_allow_html=True
