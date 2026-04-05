@@ -4,7 +4,12 @@ from outscraper import ApiClient
 
 load_dotenv()
 
-OUTSCRAPER_API_KEY = os.getenv("OUTSCRAPER_API_KEY")
+# Leer desde .env en local, desde st.secrets en producción
+try:
+    import streamlit as st
+    OUTSCRAPER_API_KEY = st.secrets.get("OUTSCRAPER_API_KEY") or os.getenv("OUTSCRAPER_API_KEY")
+except Exception:
+    OUTSCRAPER_API_KEY = os.getenv("OUTSCRAPER_API_KEY")
 cliente = ApiClient(api_key=OUTSCRAPER_API_KEY)  # Inicializar cliente Outscraper
 
 def search_businesses(query, language="it", max_leads=20):
