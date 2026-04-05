@@ -12,10 +12,15 @@ REDIRECT_URI = os.getenv("OAUTH_REDIRECT_URI", "http://localhost:8501")
 
 
 def cargar_credenciales_oauth():
-    with open("config/oauth_credentials.json") as f:
-        data = json.load(f)
-    web = data["web"]
-    return web["client_id"], web["client_secret"]
+    try:
+        client_id = st.secrets["oauth_credentials"]["cliente_id"]
+        client_secret = st.secrets["oauth_credentials"]["client_secret"]
+        return client_id, client_secret
+    except Exception:
+        with open ("config/oauth_credentials.json") as f:
+            data = json.load(f)
+        web = data["web"]
+        return web["client_id"], web["client_secret"]
 
 
 def construir_url_oauth(state=None):
