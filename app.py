@@ -298,9 +298,7 @@ if st.session_state.df is not None:
                 with open(f"config/oauth_state_{state_id}.pkl", "wb") as f:
                     pickle.dump({"df": df, "query": query}, f)
                 oauth_url = construir_url_oauth(state=state_id)
-                st.code(oauth_url, language=None)  # DEBUG: mostrar URL temporal
                 st.markdown(
-                    f'<meta http-equiv="refresh" content="0;url={oauth_url}">',
+                    f'<a href="{oauth_url}" target="_self" style="display:inline-block;padding:10px 20px;background:#00D4AA;color:#0E1117;font-weight:700;border-radius:8px;text-decoration:none;">🔗 Accedi con Google</a>',
                     unsafe_allow_html=True
                 )
-                st.info("Reindirizzamento a Google...")
