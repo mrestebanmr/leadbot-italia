@@ -1,5 +1,4 @@
 import json
-import pandas as pd
 from datetime import datetime
 import gspread
 from google.oauth2.credentials import Credentials as OAuthCredentials
