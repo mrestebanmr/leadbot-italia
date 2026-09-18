@@ -6,7 +6,12 @@
 ![Streamlit](https://img.shields.io/badge/Streamlit-1.x-red)
 ![Google Maps API](https://img.shields.io/badge/Google%20Maps-API-green)
 
----
+## 🚀 Demo live
+
+👉 [Apri LeadBot Italia](https://leadbot-italia-hys6vypj777piau7oksi27.streamlit.app)
+
+> **Nota:** L'app è in fase di verifica Google. Clicca "Continua" se appare un avviso — è normale per app in sviluppo.
+>
 
 ## 🎯 Cos'è LeadBot Italia?
 
@@ -47,7 +52,6 @@ trova le aziende, le analizza e le esporta in CSV o Google Sheets.
 
 ---
 
-
 ## 🏗️ Architettura
 
 ```
@@ -67,54 +71,63 @@ leadbot-italia/
 └── requirements.txt
 ```
 
-
 ## 🚀 Installazione
 
 ---
+
 ## 🚀 Installazione
 
 **1. Clona il repository**
+
 ```bash
 git clone https://github.com/mrestebanmr/leadbot-italia.git
 cd leadbot-italia
 ```
 
 **2. Crea e attiva l'ambiente virtuale**
+
 ```bash
 python3 -m venv venv
 source venv/bin/activate
 ```
 
 **3. Installa le dipendenze**
+
 ```bash
 pip install -r requirements.txt
 ```
 
 **4. Configura le variabili d'ambiente**
+
 ```bash
 cp .env.example .env
 ```
+
 Inserisci la tua API key di Google Maps e l'ID del foglio Google Sheets nel file `.env`.
 
 **5. Avvia l'applicazione**
+
 ```bash
 streamlit run app.py
 ```
+
 ---
+
 ## 🔐 Variabili d'ambiente
 
 Crea un file `.env` nella root del progetto:
 
-
 ## 👨‍💻 Autore
 
 ---
-**Esteban Muriel**  
-Python Developer & Data Science Student  
-📧 [estebanmuriel16@outlook.es]  
+
+**Esteban Muriel**
+Python Developer & Data Science Student
+📧 [estebanmuriel16@outlook.es]
 🔗 [LinkedIn] https://www.linkedin.com/in/esteban-muriel-648b552ba/
 🐙 [GitHub](https://github.com/mrestebanmr)
----
+---------
+
 ## 📄 Licenza
 
 MIT License — libero di usare, modificare e distribuire.
